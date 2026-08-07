@@ -1,0 +1,27 @@
+[
+  {
+    "batibo": "Mola'a ma'a",
+    "english": "Good morning",
+    "notes": "Literal: 'may your morning be good'. Common greeting before 10am."
+  },
+  {
+    "batibo": "Ndap sesu",
+    "english": "Good evening",
+    "notes": "Used when greeting someone in the evening. The repo's example dialogue teaches this as the evening counterpart to 'Mola'a ma'a'."
+  },
+  {
+    "batibo": "Aka'a nyu",
+    "english": "Goodbye",
+    "notes": "Used when parting for the day, not expecting to see the person again soon."
+  },
+  {
+    "batibo": "Aka'a mbe nnu",
+    "english": "See you later",
+    "notes": "Used when you expect to see the person again the same day. Tone falls on 'nnu'."
+  },
+  {
+    "batibo": "Nku'u mbe",
+    "english": "Almost / close, but not quite",
+    "notes": "Encouraging correction phrase — used by teachers/elders when a learner is close to right."
+  }
+]

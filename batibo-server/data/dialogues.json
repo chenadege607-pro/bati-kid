@@ -1,0 +1,18 @@
+[
+  {
+    "scenario": "Greeting correction",
+    "turns": [
+      { "speaker": "learner", "text": "Mola'a ma'a, Elder Anyi." },
+      { "speaker": "elder_anyi", "text": "Mola'a ma'a, my child! You greeted me well. Do you know how we greet someone in the evening?" },
+      { "speaker": "learner", "text": "I don't know that one yet." },
+      { "speaker": "elder_anyi", "text": "We say 'Ndap sesu'. Try it with me — Ndap sesu." }
+    ]
+  },
+  {
+    "scenario": "Gentle correction of a mistake",
+    "turns": [
+      { "speaker": "learner", "text": "I think it's \"Aka'a nyu\"?" },
+      { "speaker": "elder_anyi", "text": "Nku'u mbe! Almost. \"Aka'a nyu\" is used for \"Goodbye\". For later, we say \"Aka'a mbe nnu\". Repeat it aloud twice — the tone falls on nnu." }
+    ]
+  }
+]

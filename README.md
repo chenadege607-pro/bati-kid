@@ -1,114 +1,143 @@
-- [Key Features](#key-features)
-- [💻 Getting Started](#getting-started)
-  - [Setup](#setup)
-  - [Prerequisites](#prerequisites)
-  - [Install](#install)
-  - [Usage](#usage)
-  - [Run tests](#run-tests)
-  - [Deployment](#deployment)
-- [👥 Authors](#authors)
-- [🔭 Future Features](#future-features)
-- [🤝 Contributing](#contributing)
-- [⭐️ Show your support](#support)
-- [🙏 Acknowledgements](#acknowledgements)
-- [📝 License](#license)
+# Batibo — Full App
 
-# 📖 batikids Project: Desktop version<a name="about-project"></a>
+A React Native (Expo) implementation of the Batibo app: splash screen,
+login, sign up, and the three main tabs (Learn, Chat, Stats).
 
-This webpage shows a sneak peek into the project I have developed and deployed, showcasing my skills in HTML and CSS. A mobile and desktop responsive portfolio landing page. Please watch this [introductory video](#) to learn more about this project.
+## Structure
 
-*[Lorna Portfolio Project]** is an HTML and CSS project
-
-## 🛠 Built With <a name="built-with"></a>
-
-### Tech Stack <a name="tech-stack"></a>
-
-- HTML
-- CSS
--Git/Github
--Javascripts
-
-### Key Features <a name="key-features"></a>
-- **A desktop responsive page with a minimum width of 375px**
-- **Well designed figma template transformed to a real webpage through codes**
-
-## 💻 Getting Started <a name="getting-started"></a>
-
-To get a local copy up and running, follow these steps.
-
-### Prerequisites
-
-In order to run this project you need:
-
-- A text editor such as visual syudio vode
-- Web browser such as chrome
-
-### Setup
-
-Clone this repository to your desired folder:
-
-```sh
-  cd batikids
-  git clone https://github.com/paholorna604-max/batikids.git
+```
+batibo-app/
+├── App.js                     # navigation root: Splash → Login/SignUp → Main tabs
+├── theme.js                   # all colors/spacing/radii tokens in one place
+├── components/
+│   ├── Avatar.js              # photo or initials, with the gold ring
+│   ├── BottomTabBar.js        # custom Learn / Chat / Stats tab bar
+│   ├── ProgressBar.js         # lesson mastery bar
+│   └── StatCard.js            # small stat tile on the Stats screen
+├── screens/
+│   ├── SplashScreen.js        # animated logo splash
+│   ├── LoginScreen.js         # welcome / sign in
+│   ├── SignUpScreen.js        # "Join the community"
+│   ├── LearnScreen.js         # zig-zag lesson path
+│   ├── ChatScreen.js          # chat with Elder Anyi
+│   └── StatsScreen.js         # profile + stats + lesson mastery
+├── app.json                   # Expo config (native splash background color)
+└── package.json
 ```
 
-### Install
+## Run it
 
-Install this project with:
-
-```sh
-  cd batikids
-  npm install
+```bash
+npm install
+npx expo start
 ```
 
-### Usage
+Then press `i` (iOS simulator), `a` (Android emulator), or scan the QR
+code with Expo Go on your phone.
 
-To run the project, start the html file on live server or run normally from local directory
+### Version compatibility (Expo 57 / React Native 0.86)
 
-### Run tests
+`package.json` is pinned to the versions Expo SDK 57 actually bundles for
+React Native 0.86 (React 19.2.3) — pulled straight from Expo's own
+[bundledNativeModules.json](https://github.com/expo/expo/blob/main/packages/expo/bundledNativeModules.json),
+which is the source of truth for "which version of X works with this SDK":
 
-To run tests, run the following command:
-```sh
-  npx hint .
-  npx stylelint "**/*.{css,scss}"
+| package | version |
+|---|---|
+| `expo` | ~57.0.10 |
+| `react` | 19.2.3 |
+| `react-native` | 0.86.0 |
+| `react-native-screens` | 4.25.2 |
+| `react-native-safe-area-context` | ~5.7.0 |
+| `react-native-gesture-handler` | ~2.32.0 |
+| `expo-splash-screen` | ~56.0.10 |
+| `expo-status-bar` | ~56.0.4 |
+| `@expo/vector-icons` | ^15.0.2 |
+| `@react-navigation/*` | ^7.x (latest stable — v8 is still alpha) |
+
+If you ever bump the Expo version, don't hand-edit these numbers again —
+run this instead and let Expo resolve everything for the SDK you're on:
+
+```bash
+npx expo install expo@latest --fix
 ```
 
-### Deployment
+`npx expo install <package>` (instead of `npm install <package>`) is
+also the right way to add any *new* native package later — it always
+picks the version tested against your installed SDK.
 
-You can deploy this project using:
+Two other things RN 0.86 changed that are already reflected here:
 
-```sh 
-  gh-pages
-  netlify
-  vercel
-  render
+- **New Architecture is required** — `app.json` sets `"newArchEnabled": true`.
+- **Android edge-to-edge is standard** — `app.json` sets
+  `"edgeToEdgeEnabled": true`.
+
+
+## Navigation flow
+
 ```
-You can click on this link to [view site](#) and examine its features.
-## 👥 Authors <a name="Paho lorna"></a>
+Splash
+  └─▶ Login ──▶ SignUp ──▶ Main (tabs)
+        └──────────────────▶ Main (tabs)
 
-👤 **PAHO LORNA**
+Main (tabs)
+  ├─ Learn
+  ├─ Chat
+  └─ Stats ──▶ Sign out ──▶ Login
+```
 
-- GitHub: [PahoLorna604-max](https://github.com/paholorna604-max/batikids.git)
-- LinkedIn: [Paho Lorna](#)
+- `LoginScreen`: "Continue learning" → `Main`, "Join the community" → `SignUp`
+- `SignUpScreen`: back arrow → back to `Login`, "Begin the path" → `Main`
+- `StatsScreen`: "Sign out" → back to `Login`
 
-## 🔭 Future Features <a name="future-features"></a>
+This is the standard Expo two-layer splash pattern — see the previous
+README section below for how `SplashScreen.js` + `app.json` work together.
+`App.js`'s `prepare()` function is where you'd swap the fake delay for
+a real auth-token check, font loading, etc.
 
-- A desktop responsive portfolio website
-- More pages added displaying my various projects
+## Screens — what's real vs. sample data
 
-## 🤝 Contributing <a name="contributing"></a>
+Every screen is fully laid out and functional (inputs are controlled,
+buttons navigate, the chat composer actually appends messages), but the
+**content is static sample data** matching the mocks:
 
-Contributions, issues, and feature requests are welcome!
+- `LearnScreen.js` — `LESSONS` array (Morning Greetings / Family Bonds /
+  The Market)
+- `ChatScreen.js` — `INITIAL_MESSAGES` array; typing and hitting send
+  appends a real user bubble, but there's no AI response wired up yet
+- `StatsScreen.js` — `STATS` and `LESSONS` arrays
 
-## ⭐️ Show your support <a name="support"></a>
+Swap these for real data from your backend (fetch on mount, or pass
+through context/a state library) — the components themselves don't need
+to change.
 
-If you like this project you can go ahead give a star to the repository.
+## Matching the mocks exactly
 
+Everything is driven from `theme.js`. Two things you'll want to finish
+for a pixel-perfect match:
 
-## 🙏 Acknowledgments <a name="acknowledgements"></a>
+1. **Font** — headings use `Georgia` (a safe built-in serif) as a
+   stand-in for the bold serif in the mocks. For an exact match, drop a
+   font file (e.g. Fraunces, Lora, Source Serif) into `assets/fonts/`
+   and load it with `expo-font`:
+   ```js
+   import { useFonts } from 'expo-font';
+   const [loaded] = useFonts({
+     'Fraunces-Bold': require('./assets/fonts/Fraunces-Bold.ttf'),
+   });
+   ```
+   then set `typography.headingFamily` in `theme.js` to that family name.
+2. **Avatar photos** — `Avatar.js` falls back to initials on a tinted
+   circle when no `uri` is passed. Pass a real photo URL/asset once you
+   have user avatars, e.g. `<Avatar uri={user.photoUrl} name={user.name} />`.
 
-I give thanks to Microverse community for investing in me. I am looking forth to building more projects
+## Notes on specific screens
 
-## 📝 License <a name="license"></a>
-
-This project is [MIT](./LICENSE.md) licensed.
+- **LearnScreen**: the up/down chevrons and the thin side/bottom bars
+  are decorative, matching the scroll affordances in the mock — the
+  actual scrolling is handled by the built-in `ScrollView`.
+- **ChatScreen**: the "LISTEN" button on Elder Anyi's messages doesn't
+  play audio yet — wire it up to your TTS/audio playback of choice.
+- **StatsScreen**: the header (avatar/name/email/level) stays fixed
+  while the stats grid and lesson list scroll underneath, matching how
+  the mock looks mid-scroll.
